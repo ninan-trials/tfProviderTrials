@@ -1,0 +1,66 @@
+package main
+
+import (
+        "github.com/hashicorp/terraform/helper/schema"
+)
+
+func resourceServer() *schema.Resource {
+        return &schema.Resource{
+                Create: resourceServerCreate,
+                Read:   resourceServerRead,
+                Update: resourceServerUpdate,
+                Delete: resourceServerDelete,
+
+                Schema: map[string]*schema.Schema{
+                        "address": &schema.Schema{
+                                Type:     schema.TypeString,
+                                Required: true,
+                        },
+												"name": &schema.Schema{
+																Type: 		schema.TypeString,
+																Optional: true,
+												},
+                },
+        }
+}
+
+func resourceServerCreate(d *schema.ResourceData, m interface{}) error {
+//				address := d.Get("address").(string)
+				name := d.Get("name").(string)
+				d.SetId(name)
+				return nil
+}
+
+func resourceServerRead(d *schema.ResourceData, m interface{}) error {
+//				client := m.(*MyClient)
+//				obj, ok := client.Get(d.Id())
+//				if !ok {
+//					d.SetId("")
+//					return nil
+//				}
+//				d.Set("address", obj.Address)
+				return nil
+}
+
+func resourceServerUpdate(d *schema.ResourceData, m interface{}) error {
+				d.Partial(true)
+				if d.HasChange("address") {
+					if err := updateAddress(d, m); err != nil {
+						return err;
+					}
+					d.SetPartial("address")
+			  }
+			  d.Partial(false)
+				return nil
+}
+
+func resourceServerDelete(d *schema.ResourceData, m interface{}) error {
+        return nil
+}
+
+func updateAddress(d *schema.ResourceData, m interface{}) error {
+        address := d.Get("address").(string)
+				d.SetId(address)
+				return nil
+}
+
